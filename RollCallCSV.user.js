@@ -1,14 +1,14 @@
 // ==UserScript==
 // @name         Congressional Roll Call CSV Downloader
 // @namespace    https://mlinlin.github.io
-// @version      0.12
+// @version      0.14
 // @description  Download roll calls from congressional websites in CSV format
 // @include      https://www.senate.gov/legislative/LIS/roll_call_lists/*
 // @include      http://clerk.house.gov/evs/*
 // @grant        none
 // ==/UserScript==
 
-if (window.location.href.match(/house/g) != null){
+if (window.location.href.match(/house/g) != null && window.location.href.match(/xml/g) != null){
 setTimeout(createHTML,25);
 setTimeout(buttons,30);
 function createHTML(){
@@ -63,7 +63,8 @@ function buttons(){
      };
   })
 };
-}else{ //senate version
+};
+if (window.location.href.match(/senate/g) != null && window.location.href.match(/call_vote/g) != null){ //senate version
 setTimeout(createHTML,25);
 setTimeout(buttons,30);
 function createHTML(){
