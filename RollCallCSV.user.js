@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Congressional Roll Call CSV Downloader
 // @namespace    https://mlinlin.github.io
-// @version      0.14
+// @version      0.15
 // @description  Download roll calls from congressional websites in CSV format
 // @include      https://www.senate.gov/legislative/LIS/roll_call_lists/*
 // @include      http://clerk.house.gov/evs/*
@@ -25,15 +25,6 @@ function createHTML(){
     x.insertBefore(h, x.childNodes[0]);
   };
 };
-function download_csv(csv, filename) {
-  const csvFile = new Blob([csv], {type: "text/csv"});
-  const downloadLink = document.createElement("a");
-  downloadLink.download = filename;
-  downloadLink.href = window.URL.createObjectURL(csvFile);
-  downloadLink.style.display = "none";
-  document.body.appendChild(downloadLink);
-  downloadLink.click();
-}
 function export_to_csv(xml, filename){
   const csv=[];
   const rows=xml.querySelectorAll("vote-data")[0].querySelectorAll("recorded-vote");
@@ -78,15 +69,6 @@ function createHTML(){
     x.insertBefore(z, x.childNodes[0]);
     x.insertBefore(h, x.childNodes[0]);
 };
-function download_csv(csv, filename) {
-  const csvFile = new Blob([csv], {type: "text/csv"});
-  const downloadLink = document.createElement("a");
-  downloadLink.download = filename;
-  downloadLink.href = window.URL.createObjectURL(csvFile);
-  downloadLink.style.display = "none";
-  document.body.appendChild(downloadLink);
-  downloadLink.click();
-}
 function export_to_csv(xml, filename){
   const csv=[];
   const rows=xml.querySelectorAll("members")[0].querySelectorAll("member");
@@ -118,3 +100,12 @@ function buttons(){
   })
 };
 };
+function download_csv(csv, filename) {
+  const csvFile = new Blob([csv], {type: "text/csv"});
+  const downloadLink = document.createElement("a");
+  downloadLink.download = filename;
+  downloadLink.href = window.URL.createObjectURL(csvFile);
+  downloadLink.style.display = "none";
+  document.body.appendChild(downloadLink);
+  downloadLink.click();
+}
