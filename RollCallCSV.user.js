@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Congressional Roll Call CSV Downloader
 // @namespace    https://mlinlin.github.io
-// @version      0.15
+// @version      0.16
 // @description  Download roll calls from congressional websites in CSV format
 // @include      https://www.senate.gov/legislative/LIS/roll_call_lists/*
 // @include      http://clerk.house.gov/evs/*
@@ -30,7 +30,7 @@ function export_to_csv(xml, filename){
   const rows=xml.querySelectorAll("vote-data")[0].querySelectorAll("recorded-vote");
   for (let i=0; i<rows.length; i++){
     const row=[];
-    const therow = rows[i].querySelectorAll("legislator")[0]
+    const therow = rows[i].querySelectorAll("legislator")[0];
     row.push(therow.getAttribute("name-id"));
     row.push(therow.getAttribute("sort-field").split(",")[0]);
     row.push(therow.getAttribute("party"));
