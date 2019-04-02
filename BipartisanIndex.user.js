@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Bipartisan Index for Legislators
 // @namespace    https://mlinlin.github.io
-// @version      0.12
+// @version      0.13
 // @description  Sorts legislators by their votes with members of the opposing party in each congress
 // @include      https://www.senate.gov/legislative/LIS/roll_call_lists/*
 // @include      http://clerk.house.gov/evs/*
@@ -79,14 +79,14 @@ function calculateHouse(){
         xmlhttp.onreadystatechange = function() {
         if (xmlhttp.readyState == XMLHttpRequest.DONE) {
           if (xmlhttp.status != 200){console.log(xmlhttp.status)}
-          else{xmlallpages.push(xmlhttp.responseXML.querySelectorAll("vote-data")[0]); if(xmlallpages.length != numleft.length){dupdate()}; if(xmlallpages.length == numleft.length){dupdate(); votesort()};};};
+          else{xmlallpages.push(xmlhttp.responseXML.querySelectorAll("vote-data")[0]); dupdate()};};
        };
       };}
     }
   }
   function dupdate(){
     if(xmlallpages.length != numleft.length){document.getElementById("lodebar").style.width = 80*(xmlallpages.length/numleft.length)+'%'}
-    else{document.getElementById("lodebar").style.backgroundColor = "#81ff14";};
+    else{document.getElementById("lodebar").style.backgroundColor = '#74f442'; setTimeout(votesort,50)}
   };
 //ISSUES: 1. Index does not adjust for overall bipartisanship of legislative chamber;
 // as a result, Hern and Balderson look WAY more bipartisan than they really are. Fix this.
