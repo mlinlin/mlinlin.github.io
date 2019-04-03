@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Bipartisan Index for Legislators
 // @namespace    https://mlinlin.github.io
-// @version      0.15
+// @version      0.17
 // @description  Sorts legislators by their votes with members of the opposing party in each congress
 // @include      https://www.senate.gov/legislative/LIS/roll_call_lists/*
 // @include      http://clerk.house.gov/evs/*
@@ -116,7 +116,7 @@ function calculateHouse(){
       const polinfo=[];
       polinfo.push(polname);
       polinfo.push(rows[i].querySelectorAll("legislator")[0].innerHTML);
-      polinfo.push(therow.getAttribute("party"));
+      if(therow.getAttribute("party") == "R"){polinfo.push(therow.getAttribute("party"))}else{polinfo.push("D")};
       polinfo.push(therow.getAttribute("state"));
       polinfo.push(rows[i].querySelectorAll("vote")[0].innerHTML);
       realinfo.push(polinfo);
@@ -132,7 +132,10 @@ function calculateHouse(){
         if(Number(window.location.href.split("/")[4]) > 2002){
           localpolinfo.push(localrows[i].querySelectorAll("legislator")[0].getAttribute("name-id"));
         }else{localpolinfo.push(localrows[i].querySelectorAll("legislator")[0].innerHTML);};
-        localpolinfo.push(localrows[i].querySelectorAll("legislator")[0].getAttribute("party"));
+        if(localrows[i].querySelectorAll("legislator")[0].getAttribute("party") == "R"){
+          localpolinfo.push(localrows[i].querySelectorAll("legislator")[0].getAttribute("party"))}else{
+          localpolinfo.push("D")
+        };
         localpolinfo.push(localrows[i].querySelectorAll("vote")[0].innerHTML);
         localallpolinfo.push(localpolinfo)
       }};
@@ -164,9 +167,8 @@ function calculateHouse(){
     };
     const x = 6;
     const repinfo = realinfo.filter(subarray => subarray[2] == "R" ).sort((a,b) => b[x]-a[x]);
-    const deminfo = realinfo.filter(subarray => subarray[2] != "R" ).sort((a,b) => a[x]-b[x]);
+    const deminfo = realinfo.filter(subarray => subarray[2] == "D" ).sort((a,b) => a[x]-b[x]);
     const truinfo = deminfo.concat(repinfo);
-    console.log(truinfo);
     document.getElementById("lodebar").remove();
     document.getElementById("lodeouter").style.wordWrap = "break-word";
     document.getElementById("lodeouter").style.textAlign="left";
@@ -192,12 +194,12 @@ function calculateHouse(){
         specialbox.style.left = event.clientX;
         specialbox.style.top = event.clientY-100;
         specialbox.style.width = "120px"
-        specialbox.style.height = "65px"
+        specialbox.style.height = "75px"
         specialbox.style.backgroundColor = "#f4c842";
         specialbox.style.wordWrap = "break-word";
         specialbox.innerHTML += truinfo[i][1];
         specialbox.innerHTML +="<br>";
-        specialbox.innerHTML += truinfo[i][2];
+        if (truinfo[i][1] != "Sanders"){specialbox.innerHTML += truinfo[i][2]}else{specialbox.innerHTML += "I"};
         specialbox.innerHTML +="<br>";
         specialbox.innerHTML += truinfo[i][3];
         specialbox.innerHTML +="<br>";
