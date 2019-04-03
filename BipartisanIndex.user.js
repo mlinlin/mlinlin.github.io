@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Bipartisan Index for Legislators
 // @namespace    https://mlinlin.github.io
-// @version      0.17
+// @version      0.18
 // @description  Sorts legislators by their votes with members of the opposing party in each congress
 // @include      https://www.senate.gov/legislative/LIS/roll_call_lists/*
 // @include      http://clerk.house.gov/evs/*
@@ -187,13 +187,14 @@ function calculateHouse(){
       newdiv.addEventListener("touchstart", whenmouse);
       function whenmouse(event){
         if(document.getElementById("specialbox") != null){document.getElementById("specialbox").remove()};
+        newdiv.style.border = "thin solid black";
         const specialbox = document.createElement("DIV");
         specialbox.setAttribute("id", "specialbox");
         document.getElementsByTagName("body")[0].appendChild(specialbox);
         specialbox.style.position = "absolute";
         specialbox.style.left = event.clientX;
         specialbox.style.top = event.clientY-100;
-        specialbox.style.width = "120px"
+        specialbox.style.width = "130px"
         specialbox.style.height = "75px"
         specialbox.style.backgroundColor = "#f4c842";
         specialbox.style.wordWrap = "break-word";
