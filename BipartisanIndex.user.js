@@ -164,7 +164,7 @@ function calculateHouse(){
     };
     const x = 6;
     const repinfo = realinfo.filter(subarray => subarray[2] == "R" ).sort((a,b) => b[x]-a[x]);
-    const deminfo = realinfo.filter(subarray => subarray[2] == "D" ).sort((a,b) => a[x]-b[x]);
+    const deminfo = realinfo.filter(subarray => subarray[2] != "R" ).sort((a,b) => a[x]-b[x]);
     const truinfo = deminfo.concat(repinfo);
     console.log(truinfo);
     document.getElementById("lodebar").remove();
