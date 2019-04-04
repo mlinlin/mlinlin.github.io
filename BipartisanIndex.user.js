@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Bipartisan Index for Legislators
 // @namespace    https://mlinlin.github.io
-// @version      0.25
+// @version      0.26
 // @description  Sorts legislators by their votes with members of the opposing party in each congress
 // @include      https://www.senate.gov/legislative/LIS/roll_call_lists/*
 // @include      http://clerk.house.gov/evs/*
@@ -165,7 +165,7 @@ function calculateHouse(){
     const realinfo2flat =realinfo2.flat();
     const avgbipart = 1-(realinfo2flat.reduce((x, y) => x+y)/realinfo2flat.length);
     for (let i=0; i<realinfo.length; i++){
-      if(realinfo2[i][0] != undefined){realinfo[i].push(+(((realinfo2[i].reduce((x, y) => x+y))/realinfo2[i].length).toFixed(4)));}
+      if(realinfo2[i][0] != undefined){realinfo[i].push(+(((100*realinfo2[i].reduce((x, y) => x+y))/realinfo2[i].length).toFixed(2)));}
       else{realinfo[i].push(0)};
       //find
       if(realinfo3[i][0] != undefined && realinfo3[i].reduce((x, y) => x+y) > 0){realinfo[i].push((+(((100*(realinfo3[i].reduce((x, y) => x+y))/realinfo3[i].length)/avgbipart).toFixed(2))));}
