@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Bipartisan Index for Legislators
 // @namespace    https://mlinlin.github.io
-// @version      0.20
+// @version      0.25
 // @description  Sorts legislators by their votes with members of the opposing party in each congress
 // @include      https://www.senate.gov/legislative/LIS/roll_call_lists/*
 // @include      http://clerk.house.gov/evs/*
@@ -168,8 +168,8 @@ function calculateHouse(){
       if(realinfo2[i][0] != undefined){realinfo[i].push(+(((realinfo2[i].reduce((x, y) => x+y))/realinfo2[i].length).toFixed(4)));}
       else{realinfo[i].push(0)};
       //find
-      if(realinfo3[i][0] != undefined && realinfo3[i].reduce((x, y) => x+y) > 0){realinfo[i].push(+((((realinfo3[i].reduce((x, y) => x+y))/realinfo3[i].length)/avgbipart).toFixed(4)));}
-      else if(realinfo3[i][0] != undefined && realinfo3[i].reduce((x, y) => x+y) < 0){realinfo[i].push(+((((realinfo3[i].reduce((x, y) => x+y))/realinfo3[i].length)/(1-avgbipart)).toFixed(4)));}
+      if(realinfo3[i][0] != undefined && realinfo3[i].reduce((x, y) => x+y) > 0){realinfo[i].push((+(((100*(realinfo3[i].reduce((x, y) => x+y))/realinfo3[i].length)/avgbipart).toFixed(2))));}
+      else if(realinfo3[i][0] != undefined && realinfo3[i].reduce((x, y) => x+y) < 0){realinfo[i].push((+(((100*(realinfo3[i].reduce((x, y) => x+y))/realinfo3[i].length)/(1-avgbipart)).toFixed(2))));}
       else{realinfo[i].push(0)}
     };
     const x = 6;
@@ -209,7 +209,7 @@ function calculateHouse(){
         specialbox.setAttribute("id", "specialbox");
         document.getElementsByTagName("body")[0].appendChild(specialbox);
         specialbox.style.position = "fixed";
-        if(event.clientX < screen.width-200){specialbox.style.left = event.clientX}else{specialbox.style.left = event.clientX-130};
+        if(event.clientX < screen.width-200){specialbox.style.left = event.clientX+"px"}else{specialbox.style.left = (event.clientX-130)+"px"};
         specialbox.style.top = event.clientY-100;
         specialbox.style.width = "130px"
         specialbox.style.height = "75px"
@@ -226,9 +226,9 @@ function calculateHouse(){
         specialbox.innerHTML +="<br>";
         specialbox.innerHTML += truinfo[i][4];
         specialbox.innerHTML +="<br>";
-        specialbox.innerHTML += "Absolute Bipartisanship: "+String(truinfo[i][5]);
+        specialbox.innerHTML += "Absolute Bipartisanship: "+String(truinfo[i][5])+'%';
         specialbox.innerHTML +="<br>";
-        specialbox.innerHTML += "Relative Bipartisanship: "+String(truinfo[i][6]);
+        specialbox.innerHTML += "Relative Bipartisanship: "+String(truinfo[i][6])+'%';
         specialbox.style.fontSize = "xx-small";
       };
       function whenmouse2(event){
@@ -264,7 +264,7 @@ function calculateSenate(){
   gdiv.setAttribute("id", "lodebar");
   gdiv.style.width="0%";
   gdiv.style.float="left";
-  gdiv.style.height="25px";
+  gdiv.style.height="20px";
   gdiv.style.backgroundColor="#9ffc4e";
   hdiv.appendChild(gdiv);
   const xmlhttp = new XMLHttpRequest();
@@ -295,7 +295,6 @@ function calculateSenate(){
       if(moreas[i].getAttribute("href").includes("roll") == true && moreas[i].getAttribute("href").includes("=") == true){
         numleft.push(moreas[i])
     }};
-      console.log(numleft.length);
       const senarray=[];
       senateavoid(numleft[0]);
       function senateavoid(reallinks){
@@ -313,19 +312,19 @@ function calculateSenate(){
         xmlhttp.onreadystatechange = function() {
         if (xmlhttp.readyState == XMLHttpRequest.DONE) {
           if (xmlhttp.status != 200){console.log(xmlhttp.status)}
-          else{xmlallpages.push(xmlhttp.responseXML); dupdate()}};
+          else{xmlallpages.push(xmlhttp.responseXML.querySelectorAll("members")[0]); dupdate()}};
         };
-        setTimeout(realdelay,95);
+        setTimeout(realdelay,71);
       };
       function realdelay(){if(senarray.length < numleft.length){senateavoid(numleft[senarray.length])}};
   }
   function dupdate(){
     if(xmlallpages.length != numleft.length){document.getElementById("lodebar").style.width = (100-(numleft.length/15))*(xmlallpages.length/numleft.length)+'%'}
-    else{document.getElementById("lodebar").style.backgroundColor = '#74f442'; console.log(xmlallpages)}
+    else{document.getElementById("lodebar").style.backgroundColor = '#74f442'; setTimeout(votesort,50)}
   };
   function votesort (){
     //get each legislator's name *on the page we're on*:
-    const rows=xmlresponse[0].querySelectorAll("members")[0].querySelectorAll("member");
+    const rows=xmlresponse[0].querySelectorAll("member");
     for (let i=0; i<rows.length; i++){
       polnames.push(rows[i].querySelectorAll("lis_member_id")[0].innerHTML);
     }
@@ -335,7 +334,7 @@ function calculateSenate(){
       const polinfo=[];
       polinfo.push(polname);
       polinfo.push(therow.querySelectorAll("last_name")[0].innerHTML);
-      polinfo.push(therow.querySelectorAll("party")[0].innerHTML);
+      if(therow.querySelectorAll("party")[0].innerHTML == "R"){polinfo.push("R")}else{polinfo.push("D")};
       polinfo.push(therow.querySelectorAll("state")[0].innerHTML);
       polinfo.push(therow.querySelectorAll("vote_cast")[0].innerHTML);
       realinfo.push(polinfo);
@@ -345,18 +344,15 @@ function calculateSenate(){
     //then sort thru xmlallpages for each politician's name and how the other party voted
     for (let i=0; i<xmlallpages.length; i++){
       const localallpolinfo=[];
-      const localrows=xmlallpages[i].querySelectorAll("vote_cast")[0].innerHTML;
-      for (let i=0; i<localrows.length; i++){if(localrows[i].querySelectorAll("vote")[0].innerHTML != "Not Voting"){
+      const localrows=xmlallpages[i].querySelectorAll("member");
+      for (let i=0; i<localrows.length; i++){if(localrows[i].querySelectorAll("vote_cast")[0].innerHTML != "Not Voting"){
         const localpolinfo =[];
-        if(Number(window.location.href.split("/")[4]) > 2002){
-          localpolinfo.push(localrows[i].querySelectorAll("legislator")[0].getAttribute("name-id"));
-        }else{localpolinfo.push(localrows[i].querySelectorAll("legislator")[0].innerHTML);};
-        //fix this to account for Goode
-        if(localrows[i].querySelectorAll("legislator")[0].getAttribute("party") == "R"){
-          localpolinfo.push(localrows[i].querySelectorAll("legislator")[0].getAttribute("party"))}else{
+        localpolinfo.push(localrows[i].querySelectorAll("lis_member_id")[0].innerHTML);
+        if(localrows[i].querySelectorAll("party")[0].innerHTML == "R"){
+          localpolinfo.push("R")}else{
           localpolinfo.push("D")
         };
-        localpolinfo.push(localrows[i].querySelectorAll("vote")[0].innerHTML);
+        localpolinfo.push(localrows[i].querySelectorAll("vote_cast")[0].innerHTML);
         localallpolinfo.push(localpolinfo)
       }};
       for (let i=0; i<localallpolinfo.length; i++){
@@ -382,11 +378,11 @@ function calculateSenate(){
     const realinfo2flat =realinfo2.flat();
     const avgbipart = 1-(realinfo2flat.reduce((x, y) => x+y)/realinfo2flat.length);
     for (let i=0; i<realinfo.length; i++){
-      if(realinfo2[i][0] != undefined){realinfo[i].push(+(((realinfo2[i].reduce((x, y) => x+y))/realinfo2[i].length).toFixed(4)));}
+      if(realinfo2[i][0] != undefined){realinfo[i].push(+((100*(realinfo2[i].reduce((x, y) => x+y))/realinfo2[i].length).toFixed(2)));}
       else{realinfo[i].push(0)};
       //find
-      if(realinfo3[i][0] != undefined && realinfo3[i].reduce((x, y) => x+y) > 0){realinfo[i].push(+((((realinfo3[i].reduce((x, y) => x+y))/realinfo3[i].length)/avgbipart).toFixed(4)));}
-      else if(realinfo3[i][0] != undefined && realinfo3[i].reduce((x, y) => x+y) < 0){realinfo[i].push(+((((realinfo3[i].reduce((x, y) => x+y))/realinfo3[i].length)/(1-avgbipart)).toFixed(4)));}
+      if(realinfo3[i][0] != undefined && realinfo3[i].reduce((x, y) => x+y) > 0){realinfo[i].push(+(((100*(realinfo3[i].reduce((x, y) => x+y))/realinfo3[i].length)/(avgbipart)).toFixed(2)));}
+      else if(realinfo3[i][0] != undefined && realinfo3[i].reduce((x, y) => x+y) < 0){realinfo[i].push(+(((100*(realinfo3[i].reduce((x, y) => x+y))/realinfo3[i].length)/(1-avgbipart)).toFixed(2)));}
       else{realinfo[i].push(0)}
     };
     const x = 6;
@@ -403,7 +399,7 @@ function calculateSenate(){
       const newdiv = document.createElement('span');
       newdiv.style.border = "thin solid #ffffff"
       newdiv.setAttribute("id", truinfo[i][1]);
-      newdiv.innerHTML= "dž";
+      newdiv.innerHTML= "Ǆ";
       newdiv.style.userSelect = "none";
       newdiv.style.cursor = "pointer";
       if(truinfo[i][4] != "Not Voting" && truinfo[i][4] != "Present"){yorn.push(1)};
@@ -418,7 +414,7 @@ function calculateSenate(){
       newdiv.addEventListener("click", whenmouse2);
       newdiv.addEventListener("touchstart", whenmouse);
       newdiv.addEventListener("touchstart", whenmouse2);
-      window.addEventListener("scroll", whenmouse3);
+      //window.addEventListener("scroll", whenmouse3);
       //here we create orange box
       function whenmouse(event){
         if(document.getElementById("specialbox") != null){document.getElementById("specialbox").remove()};
@@ -426,8 +422,8 @@ function calculateSenate(){
         specialbox.setAttribute("id", "specialbox");
         document.getElementsByTagName("body")[0].appendChild(specialbox);
         specialbox.style.position = "fixed";
-        if(event.clientX < screen.width-200){specialbox.style.left = event.clientX}else{specialbox.style.left = event.clientX-130};
-        specialbox.style.top = event.clientY-100;
+        if(event.clientX < screen.width-200){specialbox.style.left = event.clientX+"px"}else{specialbox.style.left = (event.clientX-130)+"px"};
+        specialbox.style.top = (event.clientY-100)+"px";
         specialbox.style.width = "130px"
         specialbox.style.height = "75px"
         specialbox.style.backgroundColor = "#f4c842";
@@ -435,7 +431,7 @@ function calculateSenate(){
         specialbox.innerHTML += truinfo[i][1];
         specialbox.innerHTML +="<br>";
         //fix this to account for Goode and assorted other randos
-        if (truinfo[i][1] == "Sanders" || (truinfo[i][1] == "Goode" && (Number(window.location.href.split("/")[4]) == 2001)))
+        if (truinfo[i][1] == "Sanders" || truinfo[i][1] == "King" )
         {specialbox.innerHTML += "I"}
         else{specialbox.innerHTML += truinfo[i][2]};
         specialbox.innerHTML +="<br>";
@@ -443,9 +439,9 @@ function calculateSenate(){
         specialbox.innerHTML +="<br>";
         specialbox.innerHTML += truinfo[i][4];
         specialbox.innerHTML +="<br>";
-        specialbox.innerHTML += "Absolute Bipartisanship: "+String(truinfo[i][5]);
+        specialbox.innerHTML += "Absolute Bipartisanship: "+String(truinfo[i][5])+'%';
         specialbox.innerHTML +="<br>";
-        specialbox.innerHTML += "Relative Bipartisanship: "+String(truinfo[i][6]);
+        specialbox.innerHTML += "Relative Bipartisanship: "+String(truinfo[i][6])+'%';
         specialbox.style.fontSize = "xx-small";
       };
       function whenmouse2(event){
