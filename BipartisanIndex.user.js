@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Bipartisan Index for Legislators
 // @namespace    https://mlinlin.github.io
-// @version      0.27
+// @version      0.28
 // @description  Sorts legislators by their votes with members of the opposing party in each congress
 // @include      https://www.senate.gov/legislative/LIS/roll_call_lists/*
 // @include      http://clerk.house.gov/evs/*
@@ -247,7 +247,10 @@ function calculateHouse(){
 };
 function calculateSenate(){
   window.addEventListener("load", changehead);
-  function changehead(){document.getElementsByClassName("mobilehead clearfix")[0].style.position = "relative"};
+  function changehead(){
+    if(document.getElementsByClassName("mobilehead clearfix")[0].style.position != null){
+    document.getElementsByClassName("mobilehead clearfix")[0].style.position = "relative"}
+  };
   const xmlyearpage=[];
   const xmlresponse=[];
   const numleft=[];
@@ -322,7 +325,7 @@ function calculateSenate(){
       function realdelay(){if(senarray.length < numleft.length){senateavoid(numleft[senarray.length])}};
   }
   function dupdate(){
-    if(xmlallpages.length != numleft.length){document.getElementById("lodebar").style.width = (100-(numleft.length/15))*(xmlallpages.length/numleft.length)+'%'}
+    if(xmlallpages.length != numleft.length){document.getElementById("lodebar").style.width = (100-(numleft.length/30))*(xmlallpages.length/numleft.length)+'%'}
     else{document.getElementById("lodebar").style.backgroundColor = '#74f442'; setTimeout(votesort,50)}
   };
   function votesort (){
