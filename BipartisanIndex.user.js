@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Bipartisan Index for Legislators
 // @namespace    https://mlinlin.github.io
-// @version      0.28
+// @version      0.29
 // @description  Sorts legislators by their votes with members of the opposing party in each congress
 // @include      https://www.senate.gov/legislative/LIS/roll_call_lists/*
 // @include      http://clerk.house.gov/evs/*
@@ -200,7 +200,6 @@ function calculateHouse(){
       newdiv.addEventListener("click", whenmouse);
       newdiv.addEventListener("click", whenmouse2);
       newdiv.addEventListener("touchstart", whenmouse);
-      newdiv.addEventListener("touchend", whenmouse2);
       window.addEventListener("scroll", whenmouse3);
       //here we create orange box
       function whenmouse(event){
@@ -419,7 +418,6 @@ function calculateSenate(){
       newdiv.addEventListener("click", whenmouse);
       newdiv.addEventListener("click", whenmouse2);
       newdiv.addEventListener("touchstart", whenmouse);
-      newdiv.addEventListener("touchend", whenmouse2);
       window.addEventListener("scroll", whenmouse3);
       //here we create orange box
       function whenmouse(event){
