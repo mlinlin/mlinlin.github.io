@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Bipartisan Index for Legislators
 // @namespace    https://mlinlin.github.io
-// @version      0.26
+// @version      0.27
 // @description  Sorts legislators by their votes with members of the opposing party in each congress
 // @include      https://www.senate.gov/legislative/LIS/roll_call_lists/*
 // @include      http://clerk.house.gov/evs/*
@@ -200,7 +200,7 @@ function calculateHouse(){
       newdiv.addEventListener("click", whenmouse);
       newdiv.addEventListener("click", whenmouse2);
       newdiv.addEventListener("touchstart", whenmouse);
-      newdiv.addEventListener("touchstart", whenmouse2);
+      newdiv.addEventListener("touchend", whenmouse2);
       window.addEventListener("scroll", whenmouse3);
       //here we create orange box
       function whenmouse(event){
@@ -241,11 +241,13 @@ function calculateHouse(){
       const realbreak = document.createElement('span');
       realbreak.innerHTML = "؁<br>";
       realbreak.style.color = "#9e9e9e"
-      if(yorn.length == Math.ceil(presentinfo.length/2)){document.getElementById("lodeouter").appendChild(realbreak)}
+      if(yorn.length == Math.ceil(presentinfo.length/2)){document.getElementById("lodeouter").appendChild(realbreak); yorn.push(0)}
     };
   };
 };
 function calculateSenate(){
+  window.addEventListener("load", changehead);
+  function changehead(){document.getElementsByClassName("mobilehead clearfix")[0].style.position = "relative"};
   const xmlyearpage=[];
   const xmlresponse=[];
   const numleft=[];
@@ -314,7 +316,8 @@ function calculateSenate(){
           if (xmlhttp.status != 200){console.log(xmlhttp.status)}
           else{xmlallpages.push(xmlhttp.responseXML.querySelectorAll("members")[0]); dupdate()}};
         };
-        setTimeout(realdelay,71);
+        const x = 100+100*Math.random();
+        setTimeout(realdelay,x);
       };
       function realdelay(){if(senarray.length < numleft.length){senateavoid(numleft[senarray.length])}};
   }
@@ -413,8 +416,8 @@ function calculateSenate(){
       newdiv.addEventListener("click", whenmouse);
       newdiv.addEventListener("click", whenmouse2);
       newdiv.addEventListener("touchstart", whenmouse);
-      newdiv.addEventListener("touchstart", whenmouse2);
-      //window.addEventListener("scroll", whenmouse3);
+      newdiv.addEventListener("touchend", whenmouse2);
+      window.addEventListener("scroll", whenmouse3);
       //here we create orange box
       function whenmouse(event){
         if(document.getElementById("specialbox") != null){document.getElementById("specialbox").remove()};
@@ -454,7 +457,7 @@ function calculateSenate(){
       const realbreak = document.createElement('span');
       realbreak.innerHTML = "؁<br>";
       realbreak.style.color = "#9e9e9e"
-      if(yorn.length == Math.ceil(presentinfo.length/2)){document.getElementById("lodeouter").appendChild(realbreak)}
+      if(yorn.length == Math.ceil(presentinfo.length/2)){document.getElementById("lodeouter").appendChild(realbreak); yorn.push(0)}
     };
   };
 };
