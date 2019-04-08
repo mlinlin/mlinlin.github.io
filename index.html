@@ -4,8 +4,10 @@
   <title>Matvey Polin's various projects</title>
   </head>
   <body>
-    <h1>Hello, and welcome to Matvey Polin's various scripting projects</h1>
-    <p><b>First</b>, a userscript to download CSV files of roll calls from both the House and Senate
+    <h1>Welcome to Matvey Polin's various scripting projects</h1>
+
+    <p>These userscripts are best installed by <a href="https://tampermonkey.net">Tampermonkey</a> for Chrome.</p>
+    <p><b>First</b>, a userscript to download CSV files of roll call votes from both the House and Senate
     websites. This is helpful if you're trying to download a just recently published congressional
     roll call vote that has not yet been published on <a href="https://voteview.com">Voteview</a> or
     <a href="https://govtrack.us">Govtrack</a>. <a href="https://github.com/mlinlin/mlinlin.github.io/blob/master/RollCallCSV.user.js">Link to userscript</a>.</p>
@@ -22,14 +24,14 @@
     are downloaded from the congressional websites. This information is then used to 
     calculate each Senator's or Representative's votes with the other party (absolute bipartisanship),
     as well as whether their absolute bipartisanship is greater or less than average for members of their
-    own party (relative bipartisanship). The latter is generally more useful for ranking due to many congressional
-    votes being near unanimous. Their vote is then displayed in order of their relative bipartisanship as
-    squares, from left to right and from top down. Dark red and dark blue squares are Nays/Nos, ordinary
+    own party (relative bipartisanship) for the year. The latter is generally more useful for ranking due to many congressional
+    votes being near unanimous. Their votes are then displayed in order of their relative bipartisanship as
+    squares, with the top leftmost having the most strongly anti-Republican voting records and the bottom rightmost having the most strongly anti-Democratic ones. Dark red and dark blue squares are Nays/Nos, ordinary
     colored blue and red squares are Yays/Ayes, the lightest colors are Not Voting, and those colored in a tone
     between ordinary colored blue and red and the lightest colors are Present. Mousing over a politician will result
     in an orange box popping up to display their name, state, party, vote, and absolute and relative bipartisanship
     for the year the vote occured in. Clicking on a politician will result in his vote being highlighted in black. 
-    I have made sure the script works with tablets as well as with mice. 
+    I have made sure the script works with tablets as well as with mice. As with the first script, very useful if one is trying to see a voting record before it is published on Voteview or Govtrack, and has a much better means for users to select specific legislators.
     <a href="https://github.com/mlinlin/mlinlin.github.io/blob/master/BipartisanIndex.user.js">Link to userscript</a>.</p>
   </body>
   <figure><img src="https://mlinlin.github.io/HouseBipart.png" width="800"><figcaption>The userscript when loaded on a random House vote</figcaption></figure>
