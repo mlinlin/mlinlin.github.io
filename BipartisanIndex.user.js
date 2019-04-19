@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Bipartisan Index for Legislators
 // @namespace    https://mlinlin.github.io
-// @version      0.30
+// @version      0.31
 // @description  Sorts legislators by their votes with members of the opposing party in each congress
 // @include      https://www.senate.gov/legislative/LIS/roll_call_lists/*
 // @include      http://clerk.house.gov/evs/*
@@ -157,7 +157,7 @@ function calculateHouse(){
         localallpolinfo[i].push((localallpolinfo[i][3]-avgpartyindex)); //you could also do a Math.round( here; can be continuous or binary
       };
       for (let i=0; i<polnames.length; i++){ //push all bipartisan scores into the legislator's realinfo2[i] for absolute and realinfo3[i] for relative
-        const newlocalpolinfo = localallpolinfo.filter(subarray => subarray[0] == polnames[i])[0];
+        const newlocalpolinfo = localallpolinfo.filter(subarray => subarray[0] == polnames[i] && subarray[1] == realinfo[i][2])[0];
         if(newlocalpolinfo != undefined && newlocalpolinfo.length > 4){realinfo2[i].push(newlocalpolinfo[3]); realinfo3[i].push(newlocalpolinfo[4])};
       };
       document.getElementById("lodebar").style.width = 100*(xmlallpages.length/numleft.length)+'%';
@@ -375,7 +375,7 @@ function calculateSenate(){
         localallpolinfo[i].push((localallpolinfo[i][3]-avgpartyindex)); //you could also do a Math.round( here; can be continuous or binary
       };
       for (let i=0; i<polnames.length; i++){ //push all bipartisan scores into the legislator's realinfo2[i] for absolute and realinfo3[i] for relative
-        const newlocalpolinfo = localallpolinfo.filter(subarray => subarray[0] == polnames[i])[0];
+        const newlocalpolinfo = localallpolinfo.filter(subarray => subarray[0] == polnames[i] && subarray[1] == realinfo[i][2])[0];
         if(newlocalpolinfo != undefined && newlocalpolinfo.length > 4){realinfo2[i].push(newlocalpolinfo[3]); realinfo3[i].push(newlocalpolinfo[4])};
       };
       document.getElementById("lodebar").style.width = 100*(xmlallpages.length/numleft.length)+'%';
