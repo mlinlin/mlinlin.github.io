@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Bipartisan Index for Legislators
 // @namespace    https://mlinlin.github.io
-// @version      0.33
+// @version      0.34
 // @description  Sorts legislators by their votes with members of the opposing party in each congress
 // @include      https://www.senate.gov/legislative/LIS/roll_call_lists/*
 // @include      http://clerk.house.gov/evs/*
@@ -213,7 +213,7 @@ function calculateHouse(){
         document.getElementsByTagName("body")[0].appendChild(specialbox);
         specialbox.style.position = "fixed";
         if(event.clientX < screen.width-200){specialbox.style.left = event.clientX+"px"}else{specialbox.style.left = (event.clientX-130)+"px"};
-        specialbox.style.top = event.clientY-100;
+        specialbox.style.top = (event.clientY-100)+"px";
         specialbox.style.width = "130px"
         specialbox.style.height = "75px"
         specialbox.style.backgroundColor = "#f4c842";
@@ -440,9 +440,9 @@ function calculateSenate(){
         specialbox.innerHTML += truinfo[i][1];
         specialbox.innerHTML +="<br>";
         if (truinfo[i][1] == "Sanders" || truinfo[i][1] == "King" )
-        {specialbox.innerHTML += "I"}
+        {specialbox.innerHTML += "I"} else
         if (truinfo[i][1] == "Jeffords" && truinfo[i][2] == "D")
-        {specialbox.innerHTML += "I"}
+        {specialbox.innerHTML += "I"} else
         if (truinfo[i][1] == "Barkley" && truinfo[i][2] == "D")
         {specialbox.innerHTML += "I"}
         else{specialbox.innerHTML += truinfo[i][2]};
