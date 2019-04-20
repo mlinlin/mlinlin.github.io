@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Bipartisan Index for Legislators
 // @namespace    https://mlinlin.github.io
-// @version      0.31
+// @version      0.33
 // @description  Sorts legislators by their votes with members of the opposing party in each congress
 // @include      https://www.senate.gov/legislative/LIS/roll_call_lists/*
 // @include      http://clerk.house.gov/evs/*
@@ -20,6 +20,7 @@ function calculateHouse(){
   const realinfo=[];
   const realinfo2=[];
   const realinfo3=[];
+  const goode=[];
   const hdiv = document.createElement("DIV");
   hdiv.setAttribute("id", "lodeouter");
   hdiv.style.float="left";
@@ -92,13 +93,14 @@ function calculateHouse(){
   };
   function votesort (){
     //get each legislator's name *on the page we're on*:
-    const rows=xmlresponse[0].querySelectorAll("recorded-vote");
+    const rows = xmlresponse[0].querySelectorAll("recorded-vote");
+    const year = Number(window.location.href.split("/")[4]);
     if(Number(window.location.href.split("/")[4]) > 2002){for (let i=0; i<rows.length; i++){
       polnames.push(rows[i].querySelectorAll("legislator")[0].getAttribute("name-id"));
     }}else{for (let i=0; i<rows.length; i++){
       polnames.push(rows[i].querySelectorAll("legislator")[0].innerHTML);
     }};
-    if(Number(window.location.href.split("/")[4]) > 2002){for (let i=0; i<polnames.length; i++){
+    if(year > 2002){for (let i=0; i<polnames.length; i++){
       const therow = rows[i].querySelectorAll("legislator")[0];
       const polname = polnames[i];
       const polinfo=[];
@@ -111,14 +113,15 @@ function calculateHouse(){
       realinfo2.push([]);
       realinfo3.push([]);
     }};
-    if(Number(window.location.href.split("/")[4]) < 2003){for (let i=0; i<polnames.length; i++){
+    if(year < 2003){for (let i=0; i<polnames.length; i++){
       const therow = rows[i].querySelectorAll("legislator")[0];
       const polname = polnames[i];
       const polinfo=[];
       polinfo.push(polname);
-      polinfo.push(rows[i].querySelectorAll("legislator")[0].innerHTML);
-      //fix this to account for Goode
-      if(therow.getAttribute("party") == "R"){polinfo.push(therow.getAttribute("party"))}else{polinfo.push("D")};
+      polinfo.push(therow.innerHTML);
+      if (therow.innerHTML == "Goode" && therow.getAttribute("party") == "I")
+      {polinfo.push("R"); goode.push(1)}
+      else if(therow.getAttribute("party") == "R"){polinfo.push(therow.getAttribute("party"))}else{polinfo.push("D")};
       polinfo.push(therow.getAttribute("state"));
       polinfo.push(rows[i].querySelectorAll("vote")[0].innerHTML);
       realinfo.push(polinfo);
@@ -131,11 +134,12 @@ function calculateHouse(){
       const localrows=xmlallpages[i].querySelectorAll("recorded-vote");
       for (let i=0; i<localrows.length; i++){if(localrows[i].querySelectorAll("vote")[0].innerHTML != "Not Voting"){
         const localpolinfo =[];
-        if(Number(window.location.href.split("/")[4]) > 2002){
+        if(year > 2002){
           localpolinfo.push(localrows[i].querySelectorAll("legislator")[0].getAttribute("name-id"));
         }else{localpolinfo.push(localrows[i].querySelectorAll("legislator")[0].innerHTML);};
-        //fix this to account for Goode
-        if(localrows[i].querySelectorAll("legislator")[0].getAttribute("party") == "R"){
+        if (localrows[i].querySelectorAll("legislator")[0].innerHTML == "Goode" && localrows[i].querySelectorAll("legislator")[0].getAttribute("party") == "I")
+        {localpolinfo.push("R")}
+        else if(localrows[i].querySelectorAll("legislator")[0].getAttribute("party") == "R"){
           localpolinfo.push(localrows[i].querySelectorAll("legislator")[0].getAttribute("party"))}else{
           localpolinfo.push("D")
         };
@@ -216,8 +220,9 @@ function calculateHouse(){
         specialbox.style.wordWrap = "break-word";
         specialbox.innerHTML += truinfo[i][1];
         specialbox.innerHTML +="<br>";
-        //fix this to account for Goode and assorted other randos
-        if (truinfo[i][1] == "Sanders" || (truinfo[i][1] == "Goode" && (Number(window.location.href.split("/")[4]) == 2001)))
+        if (truinfo[i][1] == "Sanders")
+        {specialbox.innerHTML += "I"}
+        else if (truinfo[i][1] == "Goode" && goode.length > 0)
         {specialbox.innerHTML += "I"}
         else{specialbox.innerHTML += truinfo[i][2]};
         specialbox.innerHTML +="<br>";
@@ -434,8 +439,11 @@ function calculateSenate(){
         specialbox.style.wordWrap = "break-word";
         specialbox.innerHTML += truinfo[i][1];
         specialbox.innerHTML +="<br>";
-        //fix this to account for Goode and assorted other randos
         if (truinfo[i][1] == "Sanders" || truinfo[i][1] == "King" )
+        {specialbox.innerHTML += "I"}
+        if (truinfo[i][1] == "Jeffords" && truinfo[i][2] == "D")
+        {specialbox.innerHTML += "I"}
+        if (truinfo[i][1] == "Barkley" && truinfo[i][2] == "D")
         {specialbox.innerHTML += "I"}
         else{specialbox.innerHTML += truinfo[i][2]};
         specialbox.innerHTML +="<br>";
