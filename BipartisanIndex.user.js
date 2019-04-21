@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Bipartisan Index for Legislators
 // @namespace    https://mlinlin.github.io
-// @version      0.35
+// @version      0.36
 // @description  Sorts legislators by their votes with members of the opposing party in each congress
 // @include      https://www.senate.gov/legislative/LIS/roll_call_lists/*
 // @include      http://clerk.house.gov/evs/*
@@ -194,7 +194,7 @@ function calculateHouse(){
       newdiv.style.userSelect = "none";
       newdiv.style.cursor = "pointer";
       if(truinfo[i][4] != "Not Voting" && truinfo[i][4] != "Present"){yorn.push(1)};
-      if(truinfo[i][2] == "R"){newdiv.style.backgroundColor = "red"}else{newdiv.style.backgroundColor = "#0050ff"};
+      if(truinfo[i][2] == "R"){newdiv.style.backgroundColor = "#ff7d7d"}else{newdiv.style.backgroundColor = "#63b3ff"};
       if(truinfo[i][4] == "Yea" || truinfo[i][4] == "Aye"){if(truinfo[i][2] == "R"){newdiv.style.backgroundColor = "red"}else{newdiv.style.backgroundColor = "#0050ff"};};
       if(truinfo[i][4] == "Nay" || truinfo[i][4] == "No"){if(truinfo[i][2] == "R"){newdiv.style.backgroundColor = "#7d0000"}else{newdiv.style.backgroundColor = "#000c7c"};};
       if(truinfo[i][4] == "Present"){if(truinfo[i][2] == "R"){newdiv.style.backgroundColor = "#ff7d7d"}else{newdiv.style.backgroundColor = "#63b3ff"};};
@@ -413,7 +413,7 @@ function calculateSenate(){
       newdiv.style.userSelect = "none";
       newdiv.style.cursor = "pointer";
       if(truinfo[i][4] != "Not Voting" && truinfo[i][4] != "Present"){yorn.push(1)};
-      if(truinfo[i][2] == "R"){newdiv.style.backgroundColor = "red"}else{newdiv.style.backgroundColor = "#0050ff"};
+      if(truinfo[i][2] == "R"){newdiv.style.backgroundColor = "#ff7d7d"}else{newdiv.style.backgroundColor = "#63b3ff"};
       if(truinfo[i][4] == "Yea" || truinfo[i][4] == "Aye"){if(truinfo[i][2] == "R"){newdiv.style.backgroundColor = "red"}else{newdiv.style.backgroundColor = "#0050ff"};};
       if(truinfo[i][4] == "Nay" || truinfo[i][4] == "No"){if(truinfo[i][2] == "R"){newdiv.style.backgroundColor = "#7d0000"}else{newdiv.style.backgroundColor = "#000c7c"};};
       if(truinfo[i][4] == "Present"){if(truinfo[i][2] == "R"){newdiv.style.backgroundColor = "#ff7d7d"}else{newdiv.style.backgroundColor = "#63b3ff"};};
