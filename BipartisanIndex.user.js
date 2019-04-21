@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Bipartisan Index for Legislators
 // @namespace    https://mlinlin.github.io
-// @version      0.34
+// @version      0.35
 // @description  Sorts legislators by their votes with members of the opposing party in each congress
 // @include      https://www.senate.gov/legislative/LIS/roll_call_lists/*
 // @include      http://clerk.house.gov/evs/*
@@ -212,7 +212,7 @@ function calculateHouse(){
         specialbox.setAttribute("id", "specialbox");
         document.getElementsByTagName("body")[0].appendChild(specialbox);
         specialbox.style.position = "fixed";
-        if(event.clientX < screen.width-200){specialbox.style.left = event.clientX+"px"}else{specialbox.style.left = (event.clientX-130)+"px"};
+        if(event.clientX < window.innerWidth-200){specialbox.style.left = event.clientX+"px"}else{specialbox.style.left = (event.clientX-130)+"px"};
         specialbox.style.top = (event.clientY-100)+"px";
         specialbox.style.width = "130px"
         specialbox.style.height = "75px"
@@ -431,7 +431,7 @@ function calculateSenate(){
         specialbox.setAttribute("id", "specialbox");
         document.getElementsByTagName("body")[0].appendChild(specialbox);
         specialbox.style.position = "fixed";
-        if(event.clientX < screen.width-200){specialbox.style.left = event.clientX+"px"}else{specialbox.style.left = (event.clientX-130)+"px"};
+        if(event.clientX < window.innerWidth-200){specialbox.style.left = event.clientX+"px"}else{specialbox.style.left = (event.clientX-130)+"px"};
         specialbox.style.top = (event.clientY-100)+"px";
         specialbox.style.width = "130px"
         specialbox.style.height = "75px"
