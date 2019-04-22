@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Bipartisan Index for Legislators
 // @namespace    https://mlinlin.github.io
-// @version      0.37
+// @version      0.38
 // @description  Sorts legislators by their votes with members of the opposing party in each congress
 // @include      https://www.senate.gov/legislative/LIS/roll_call_lists/*
 // @include      http://clerk.house.gov/evs/*
@@ -197,7 +197,7 @@ function calculateHouse(){
       if(truinfo[i][2] == "R"){newdiv.style.backgroundColor = "#7d0000"}else{newdiv.style.backgroundColor = "#000c7c"};
       if(year==2019 &&(truinfo[i][4] == "McCarthy" || truinfo[i][4] == "Pelosi"))
       {if(truinfo[i][2] == "R"){newdiv.style.backgroundColor = "red"}else{newdiv.style.backgroundColor = "#0050ff"};};
-      const standardspeaker=[2015, 2013, 2011, 2009, 2007];
+      const standardspeaker=[2017, 2015, 2013, 2011, 2009, 2007];
       const standardspeaker2=[2005, 2003, 2001, 1999];
       const standardspeaker3=[1997, 1995, 1993, 1991];
       if(standardspeaker.indexOf(year) != -1 &&(truinfo[i][4] == "Ryan (WI)" || truinfo[i][4] == "Pelosi" || truinfo[i][4] == "Boehner"))
