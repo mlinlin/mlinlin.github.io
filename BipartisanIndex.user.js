@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Bipartisan Index for Legislators
 // @namespace    https://mlinlin.github.io
-// @version      0.36
+// @version      0.37
 // @description  Sorts legislators by their votes with members of the opposing party in each congress
 // @include      https://www.senate.gov/legislative/LIS/roll_call_lists/*
 // @include      http://clerk.house.gov/evs/*
@@ -106,7 +106,7 @@ function calculateHouse(){
       const polinfo=[];
       polinfo.push(polname);
       polinfo.push(therow.getAttribute("sort-field").split(",")[0]);
-      polinfo.push(therow.getAttribute("party"));
+      if(therow.getAttribute("party") == "R"){polinfo.push(therow.getAttribute("party"))}else{polinfo.push("D")};
       polinfo.push(therow.getAttribute("state"));
       polinfo.push(rows[i].querySelectorAll("vote")[0].innerHTML);
       realinfo.push(polinfo);
@@ -194,7 +194,18 @@ function calculateHouse(){
       newdiv.style.userSelect = "none";
       newdiv.style.cursor = "pointer";
       if(truinfo[i][4] != "Not Voting" && truinfo[i][4] != "Present"){yorn.push(1)};
-      if(truinfo[i][2] == "R"){newdiv.style.backgroundColor = "#ff7d7d"}else{newdiv.style.backgroundColor = "#63b3ff"};
+      if(truinfo[i][2] == "R"){newdiv.style.backgroundColor = "#7d0000"}else{newdiv.style.backgroundColor = "#000c7c"};
+      if(year==2019 &&(truinfo[i][4] == "McCarthy" || truinfo[i][4] == "Pelosi"))
+      {if(truinfo[i][2] == "R"){newdiv.style.backgroundColor = "red"}else{newdiv.style.backgroundColor = "#0050ff"};};
+      const standardspeaker=[2015, 2013, 2011, 2009, 2007];
+      const standardspeaker2=[2005, 2003, 2001, 1999];
+      const standardspeaker3=[1997, 1995, 1993, 1991];
+      if(standardspeaker.indexOf(year) != -1 &&(truinfo[i][4] == "Ryan (WI)" || truinfo[i][4] == "Pelosi" || truinfo[i][4] == "Boehner"))
+      {if(truinfo[i][2] == "R"){newdiv.style.backgroundColor = "red"}else{newdiv.style.backgroundColor = "#0050ff"};};
+      if(standardspeaker2.indexOf(year) != -1 &&(truinfo[i][4] == "Hastert" || truinfo[i][4] == "Pelosi" || truinfo[i][4] == "Gephardt"))
+      {if(truinfo[i][2] == "R"){newdiv.style.backgroundColor = "red"}else{newdiv.style.backgroundColor = "#0050ff"};};
+      if(standardspeaker3.indexOf(year) != -1 &&(truinfo[i][4] == "Foley" || truinfo[i][4] == "Michel" || truinfo[i][4] == "Gephardt" || truinfo[i][4] == "Gingrich"))
+      {if(truinfo[i][2] == "R"){newdiv.style.backgroundColor = "red"}else{newdiv.style.backgroundColor = "#0050ff"};};
       if(truinfo[i][4] == "Yea" || truinfo[i][4] == "Aye"){if(truinfo[i][2] == "R"){newdiv.style.backgroundColor = "red"}else{newdiv.style.backgroundColor = "#0050ff"};};
       if(truinfo[i][4] == "Nay" || truinfo[i][4] == "No"){if(truinfo[i][2] == "R"){newdiv.style.backgroundColor = "#7d0000"}else{newdiv.style.backgroundColor = "#000c7c"};};
       if(truinfo[i][4] == "Present"){if(truinfo[i][2] == "R"){newdiv.style.backgroundColor = "#ff7d7d"}else{newdiv.style.backgroundColor = "#63b3ff"};};
