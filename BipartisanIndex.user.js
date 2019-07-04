@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Bipartisan Index for Legislators
 // @namespace    https://mlinlin.github.io
-// @version      0.38
+// @version      0.39
 // @description  Sorts legislators by their votes with members of the opposing party in each congress
 // @include      https://www.senate.gov/legislative/LIS/roll_call_lists/*
 // @include      http://clerk.house.gov/evs/*
@@ -21,6 +21,7 @@ function calculateHouse(){
   const realinfo2=[];
   const realinfo3=[];
   const goode=[];
+  const amash=[];
   const hdiv = document.createElement("DIV");
   hdiv.setAttribute("id", "lodeouter");
   hdiv.style.float="left";
@@ -106,7 +107,8 @@ function calculateHouse(){
       const polinfo=[];
       polinfo.push(polname);
       polinfo.push(therow.getAttribute("sort-field").split(",")[0]);
-      if(therow.getAttribute("party") == "R"){polinfo.push(therow.getAttribute("party"))}else{polinfo.push("D")};
+      if(therow.getAttribute("sort-field").split(",")[0] == "Amash" && therow.getAttribute("party") == "I"){polinfo.push("R"); amash.push(1)}
+      else if(therow.getAttribute("party") == "R"){polinfo.push(therow.getAttribute("party"))}else{polinfo.push("D")};
       polinfo.push(therow.getAttribute("state"));
       polinfo.push(rows[i].querySelectorAll("vote")[0].innerHTML);
       realinfo.push(polinfo);
@@ -158,7 +160,7 @@ function calculateHouse(){
         const opartylocalrows = localallpolinfo.filter(subarray => subarray[1] == localallpolinfo[i][1]);
         for (let i=0; i<opartylocalrows.length; i++){localindices.push(opartylocalrows[i][3])}
         const avgpartyindex = localindices.reduce((x,y)=> x+y)/opartylocalrows.length; //get average bipartisan index for whole party
-        localallpolinfo[i].push((localallpolinfo[i][3]-avgpartyindex)); //you could also do a Math.round( here; can be continuous or binary
+        localallpolinfo[i].push(localallpolinfo[i][3]-avgpartyindex); //you could also do a Math.round( here; can be continuous or binary
       };
       for (let i=0; i<polnames.length; i++){ //push all bipartisan scores into the legislator's realinfo2[i] for absolute and realinfo3[i] for relative
         const newlocalpolinfo = localallpolinfo.filter(subarray => subarray[0] == polnames[i] && subarray[1] == realinfo[i][2])[0];
@@ -234,6 +236,8 @@ function calculateHouse(){
         if (truinfo[i][1] == "Sanders")
         {specialbox.innerHTML += "I"}
         else if (truinfo[i][1] == "Goode" && goode.length > 0)
+        {specialbox.innerHTML += "I"}
+        else if (truinfo[i][1] == "Amash" && amash.length > 0)
         {specialbox.innerHTML += "I"}
         else{specialbox.innerHTML += truinfo[i][2]};
         specialbox.innerHTML +="<br>";
