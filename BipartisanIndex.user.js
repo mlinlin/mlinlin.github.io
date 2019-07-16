@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Bipartisan Index for Legislators
 // @namespace    https://mlinlin.github.io
-// @version      0.39
+// @version      0.40
 // @description  Sorts legislators by their votes with members of the opposing party in each congress
 // @include      https://www.senate.gov/legislative/LIS/roll_call_lists/*
 // @include      http://clerk.house.gov/evs/*
@@ -140,6 +140,8 @@ function calculateHouse(){
           localpolinfo.push(localrows[i].querySelectorAll("legislator")[0].getAttribute("name-id"));
         }else{localpolinfo.push(localrows[i].querySelectorAll("legislator")[0].innerHTML);};
         if (localrows[i].querySelectorAll("legislator")[0].innerHTML == "Goode" && localrows[i].querySelectorAll("legislator")[0].getAttribute("party") == "I")
+        {localpolinfo.push("R")}
+        else if (localrows[i].querySelectorAll("legislator")[0].getAttribute("name-id") == "A000367" && localrows[i].querySelectorAll("legislator")[0].getAttribute("party") == "I")
         {localpolinfo.push("R")}
         else if(localrows[i].querySelectorAll("legislator")[0].getAttribute("party") == "R"){
           localpolinfo.push(localrows[i].querySelectorAll("legislator")[0].getAttribute("party"))}else{
