@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         Bipartisan Index for Legislators
 // @namespace    https://mlinlin.github.io
-// @version      0.40
+// @version      0.41
 // @description  Sorts legislators by their votes with members of the opposing party in each congress
 // @include      https://www.senate.gov/legislative/LIS/roll_call_lists/*
-// @include      http://clerk.house.gov/evs/*
+// @include      https://clerk.house.gov/evs/*
 // @grant        none
 // ==/UserScript==
 
