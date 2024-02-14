@@ -307,8 +307,7 @@ function calculateSenate(){
      else{xmlyearpage.push(xmlhttp.responseXML.getElementsByTagName("table")[0].getElementsByTagName("tbody")[0]); getallpagespush()};};
    };
   function getallpagespush (){
-    const pagelinksurl = document.getElementById("secondary_col2").querySelectorAll("span")[1].querySelectorAll("a")[0].getAttribute("href"); //looks legit.
-    //result is "/legislative/LIS/roll_call_votes/vote1162/vote_116_2_00292.xml"
+    const pagelinksurl = document.getElementById("secondary_col2").querySelectorAll("span")[1].querySelectorAll("a")[0].getAttribute("href");
     const xmlhttp = new XMLHttpRequest();
     xmlhttp.open("GET", pagelinksurl, true);
     xmlhttp.send();
